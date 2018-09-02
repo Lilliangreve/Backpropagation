@@ -12,8 +12,9 @@ X, y = make_blobs(centers=2, random_state=42)
 #                             n_clusters_per_class=1)
 print(X.shape, y.shape)
 
-plt.plot(X[:, 0], X[:, 1], 'bo')
-plt.show()
+
+# plt.plot(X[:,0], X[:,1], 'bo')
+# plt.show()
 
 
 def sigmoid(x):
