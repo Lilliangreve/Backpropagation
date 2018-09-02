@@ -34,7 +34,7 @@ def total_loss(ytrue, ypred):
     '''returns a scalar that tell how far we are off'''
     #loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(ypred, ytrue))
     #loss = log_loss(ytrue, ypred)
-    return total_loss = sum(ytrue-ypred)**2
+    return sum(ytrue-ypred)**2
 
 
 def sigmoid_derivative(x):
