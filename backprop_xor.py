@@ -1,8 +1,7 @@
-import numpy as np
-
 '''Backprop is a method for calculating the gradient of the model’s error with
 respect to every weight in the model. We do it so that we can slightly update
 each weight via gradient descent in order to reduce the model’s error.'''
+import numpy as np
 
 
 def main():
@@ -35,8 +34,7 @@ def total_loss(ytrue, ypred):
     '''returns a scalar that tell how far we are off'''
     #loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(ypred, ytrue))
     #loss = log_loss(ytrue, ypred)
-    total_loss = sum(ytrue-ypred)**2
-    return total_loss
+    return total_loss = sum(ytrue-ypred)**2
 
 
 def sigmoid_derivative(x):
@@ -59,31 +57,32 @@ def backpropagation(x, y, w, learning_rate, epochs):
     '''run the feed forward network, calculate the loss, adjust the weights of
     the output layer, propagate to the hidden layer, adjust weights, iterate'''
     for i in range(epochs):
-        # 2
+        # 2. Calculate the output of both layers
         n1, n2, ypred = feed_forward(x, w, sigmoid)
         # 3. calculate the loss for each data point
         loss = (y - ypred) ** 3
         print("loss: ", sum(loss))
-        # 4. modify each weight
+        # 4. Modify each weight of the output layer
         oldw = w.copy()
         w[2, 0] += sum(sigmoid_derivative(ypred)*loss*n1)
         w[2, 1] += sum(sigmoid_derivative(ypred)*loss*n2)
         w[2, 2] += sum(sigmoid_derivative(ypred)*loss*1)
-        # 5
+        # 5. Calculate hidden_loss for each hidden neuron
         hidden_loss1 = sigmoid_derivative(ypred) * oldw[2, 0]
         hidden_loss2 = sigmoid_derivative(ypred) * oldw[2, 1]
-        # 6
+        # 6. Modify each weight in the hidden layer
         w[0, 0] -= sum(sigmoid_derivative(n1) *
-                       hidden_loss1 * x[:, 0]) * learning_rate
+                       hidden_loss1 * X[:, 0]) * learning_rate
         w[0, 1] -= sum(sigmoid_derivative(n1) *
-                       hidden_loss1 * x[:, 1]) * learning_rate
-        w[0, 2] -= sum(sigmoid_derivative(n1) * loss * 1.0) * learning_rate
-        w[1, 0] -= sum(sigmoid_derivative(n1) *
-                       hidden_loss1 * x[:, 0]) * learning_rate
-        w[1, 1] -= sum(sigmoid_derivative(n1) *
-                       hidden_loss1 * x[:, 1]) * learning_rate
-        w[1, 2] -= sum(sigmoid_derivative(n1) * loss * 1.0) * learning_rate
-
+                       hidden_loss1 * X[:, 1]) * learning_rate
+        w[0, 2] -= sum(sigmoid_derivative(n1) *
+                       hidden_loss1 * 1.0) * learning_rate
+        w[1, 0] -= sum(sigmoid_derivative(n2) *
+                       hidden_loss2 * X[:, 0]) * learning_rate
+        w[1, 1] -= sum(sigmoid_derivative(n2) *
+                       hidden_loss2 * X[:, 1]) * learning_rate
+        w[1, 2] -= sum(sigmoid_derivative(n2) *
+                       hidden_loss2 * 1.0) * learning_rate
     return w
 
 

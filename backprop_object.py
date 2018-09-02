@@ -1,5 +1,7 @@
+'''code adapted from https://dev.to/shamdasani/
+build-a-flexible-neural-network-with-backpropagation-in-python'''
+
 import numpy as np
-# https://dev.to/shamdasani/build-a-flexible-neural-network-with-backpropagation-in-python
 
 # X = (hours sleeping, hours studying), y = score on test
 X = np.array(([2, 9], [1, 5], [3, 6]), dtype=float)
@@ -10,21 +12,20 @@ X = X/np.amax(X, axis=0)  # maximum of X array (each column)
 y = y/100  # max test score is 100
 
 
-class Neural_Network(object):
+class NeuralNetwork(object):
     def __init__(self):
         # constructor -> creates an instance
         # parameters
-        self.inputSize = 2
-        self.outputSize = 1
-        self.hiddenSize = 3
+        self.input_size = 2
+        self.output_size = 1
+        self.hidden_size = 3
         # (3x2) weight matrix from input to hidden layer:
-        self.W1 = np.random.randn(self.inputSize, self.hiddenSize)
+        self.W1 = np.random.randn(self.input_size, self.hidden_size)
         # (3x1) weight matrix from hidden to output layer:
-        self.W2 = np.random.randn(self.hiddenSize, self.outputSize)
+        self.W2 = np.random.randn(self.hidden_size, self.output_size)
 
     def forward(self, X):
-        # method (function inside a class)
-        # forward propagation through our network
+        '''forward propagation through our network'''
         # dot product of X (input) and first set of 3x2 weights
         self.z = np.dot(X, self.W1)
         self.z2 = self.sigmoid(self.z)  # activation function
@@ -34,23 +35,23 @@ class Neural_Network(object):
         return o
 
     def sigmoid(self, s):
-        # activation function
+        '''activation function'''
         return 1/(1+np.exp(-s))
 
-    def sigmoidPrime(self, s):
-        # derivative of sigmoid
+    def sigmoid_prime(self, s):
+        '''derivative of sigmoid'''
         return s * (1 - s)
 
     def backward(self, X, y, o):
-        # backward propgate through the network
+        '''backward propgate through the network'''
         self.o_error = y - o  # error in output
         # applying derivative of sigmoid to error
-        self.o_delta = self.o_error*self.sigmoidPrime(o)
+        self.o_delta = self.o_error*self.sigmoid_prime(o)
 
         # z2 error: how much hidden layer weights contributed to output error
         self.z2_error = self.o_delta.dot(self.W2.T)
         # applying derivative of sigmoid to z2 error
-        self.z2_delta = self.z2_error*self.sigmoidPrime(self.z2)
+        self.z2_delta = self.z2_error*self.sigmoid_prime(self.z2)
 
         # adjusting first set (input --> hidden) weights
         self.W1 += X.T.dot(self.z2_delta)
@@ -62,7 +63,7 @@ class Neural_Network(object):
         self.backward(X, y, o)
 
 
-NN = Neural_Network()  # this is an 'instance'
+NN = NeuralNetwork()  # this is an 'instance'
 for i in range(1000):  # trains the NN 1,000 times
     NN.train(X, y)
 

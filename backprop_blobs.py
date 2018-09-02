@@ -1,8 +1,8 @@
+'''This script uses scikit-learn's blobs dataset to test the backprop code'''
 
 import numpy as np
-from sklearn.metrics import log_loss
-from sklearn.datasets import make_blobs, make_classification
-import matplotlib.pyplot as plt
+from sklearn.datasets import make_blobs
+# import matplotlib.pyplot as plt
 
 X = np.array([1, 0])
 y = np.array([1])
